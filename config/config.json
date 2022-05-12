@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "apoyo-emocional-estadisticas-pacientes-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/apoyoEmocionalEstadisticasPacientes/ApoyoEmocionalEstadisticasPacientesWebPart.js",
+          "manifest": "./src/webparts/apoyoEmocionalEstadisticasPacientes/ApoyoEmocionalEstadisticasPacientesWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "ApoyoEmocionalEstadisticasPacientesWebPartStrings": "lib/webparts/apoyoEmocionalEstadisticasPacientes/loc/{locale}.js"
+  }
+}
