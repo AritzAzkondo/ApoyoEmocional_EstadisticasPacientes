@@ -11,13 +11,13 @@ export class AE_Services {
         } else if(dominio === 'pre2osakidetza.sharepoint.com') {
             this.urlPeticion = PRE_URL;
         } 
-        else {
-            this.urlPeticion = LOCAL;
-        }
+        // else {
+        //     this.urlPeticion = LOCAL;
+        // }
     }
 
-    getSesiones(tipoPersona: string): Promise<AE_EstadisticasComunesEntity[]>{
-      return fetch(`${this.urlPeticion}ApoyoEmocional/GetEstadisticasSesionessProfesionales/${tipoPersona}`)
+    getSesiones(tipoPersona: string, fechaInicio: string, fechaFin: string): Promise<AE_EstadisticasComunesEntity[]>{
+      return fetch(`${this.urlPeticion}ApoyoEmocional/GetEstadisticasSesionessProfesionales/${tipoPersona}/${fechaInicio}/${fechaFin}`)
       .then(res => res.json())
       .then(
           (result) => {
@@ -30,7 +30,7 @@ export class AE_Services {
       );
     }
 
-    getIntervenciones(tipoPersona: string, fechaInicio: Date, fechaFin: Date): Promise<AE_EstadisticasComunesEntity[]>{
+    getIntervenciones(tipoPersona: string, fechaInicio: string, fechaFin: string): Promise<AE_EstadisticasComunesEntity[]>{
       return fetch(`${this.urlPeticion}ApoyoEmocional/GetEstadisticasIntervencionesProfesionales/${tipoPersona}/${fechaInicio}/${fechaFin}`)
       .then(res => res.json())
       .then(
@@ -44,8 +44,8 @@ export class AE_Services {
       );
     }
 
-    getSexo(tipoPersona: string): Promise<AE_EstadisticasComunesEntity[]>{
-      return fetch(`${this.urlPeticion}ApoyoEmocional/GetEstadisticasSexosProfesionales/${tipoPersona}`)
+    getSexo(tipoPersona: string, fechaInicio: string, fechaFin: string): Promise<AE_EstadisticasComunesEntity[]>{
+      return fetch(`${this.urlPeticion}ApoyoEmocional/GetEstadisticasSexosProfesionales/${tipoPersona}/${fechaInicio}/${fechaFin}`)
       .then(res => res.json())
       .then(
           (result) => {
@@ -58,8 +58,8 @@ export class AE_Services {
       );
     }
 
-    getEdad(tipoPersona: string): Promise<AE_EstadisticasComunesEntity[]>{
-      return fetch(`${this.urlPeticion}ApoyoEmocional/GetEstadisticasEdadProfesionales/${tipoPersona}`)
+    getEdad(tipoPersona: string, fechaInicio: string, fechaFin: string): Promise<AE_EstadisticasComunesEntity[]>{
+      return fetch(`${this.urlPeticion}ApoyoEmocional/GetEstadisticasEdadProfesionales/${tipoPersona}/${fechaInicio}/${fechaFin}`)
       .then(res => res.json())
       .then(
           (result) => {
@@ -72,8 +72,8 @@ export class AE_Services {
       );
     }
 
-    getCategoriaProfesional(tipoPersona: string): Promise<AE_EstadisticasComunesEntity[]>{
-      return fetch(`${this.urlPeticion}ApoyoEmocional/GetEstadisticasCategoriaProfesionalProfesionales/${tipoPersona}`)
+    getCategoriaProfesional(tipoPersona: string, fechaInicio: string, fechaFin: string): Promise<AE_EstadisticasComunesEntity[]>{
+      return fetch(`${this.urlPeticion}ApoyoEmocional/GetEstadisticasCategoriaProfesionalProfesionales/${tipoPersona}/${fechaInicio}/${fechaFin}`)
       .then(res => res.json())
       .then(
           (result) => {
@@ -86,8 +86,8 @@ export class AE_Services {
       );
     }
 
-    getOsi(tipoPersona: string): Promise<AE_EstadisticasComunesEntity[]>{
-      return fetch(`${this.urlPeticion}ApoyoEmocional/GetEstadisticasOsiProfesionales/${tipoPersona}`)
+    getOsi(tipoPersona: string, fechaInicio: string, fechaFin: string): Promise<AE_EstadisticasComunesEntity[]>{
+      return fetch(`${this.urlPeticion}ApoyoEmocional/GetEstadisticasOsiProfesionales/${tipoPersona}/${fechaInicio}/${fechaFin}`)
       .then(res => res.json())
       .then(
           (result) => {
@@ -100,8 +100,8 @@ export class AE_Services {
       );
     }
 
-    getDemanda(tipoPersona: string): Promise<AE_EstadisticasComunesEntity[]>{
-      return fetch(`${this.urlPeticion}ApoyoEmocional/GetEstadisticasDemandaProfesionales/${tipoPersona}`)
+    getDemanda(tipoPersona: string, fechaInicio: string, fechaFin: string): Promise<AE_EstadisticasComunesEntity[]>{
+      return fetch(`${this.urlPeticion}ApoyoEmocional/GetEstadisticasDemandaProfesionales/${tipoPersona}/${fechaInicio}/${fechaFin}`)
       .then(res => res.json())
       .then(
           (result) => {
@@ -114,8 +114,8 @@ export class AE_Services {
       );
     }
 
-    getTipoIntervencion(tipoPersona: string): Promise<AE_EstadisticasComunesEntity[]>{
-      return fetch(`${this.urlPeticion}ApoyoEmocional/GetEstadisticasTipoIntervencionProfesionales/${tipoPersona}`)
+    getTipoIntervencion(tipoPersona: string, fechaInicio: string, fechaFin: string): Promise<AE_EstadisticasComunesEntity[]>{
+      return fetch(`${this.urlPeticion}ApoyoEmocional/GetEstadisticasTipoIntervencionProfesionales/${tipoPersona}/${fechaInicio}/${fechaFin}`)
       .then(res => res.json())
       .then(
           (result) => {
@@ -128,8 +128,8 @@ export class AE_Services {
       );
     }
 
-    getClaseIntervencion(tipoPersona: string): Promise<AE_EstadisticasComunesEntity[]>{
-      return fetch(`${this.urlPeticion}ApoyoEmocional/GetEstadisticasClaseIntervencionProfesionales/${tipoPersona}`)
+    getClaseIntervencion(tipoPersona: string, fechaInicio: string, fechaFin: string): Promise<AE_EstadisticasComunesEntity[]>{
+      return fetch(`${this.urlPeticion}ApoyoEmocional/GetEstadisticasClaseIntervencionProfesionales/${tipoPersona}/${fechaInicio}/${fechaFin}`)
       .then(res => res.json())
       .then(
           (result) => {
@@ -142,8 +142,8 @@ export class AE_Services {
       );
     }
 
-    getProfesion(tipoPersona: string): Promise<AE_EstadisticasComunesEntity[]>{
-      return fetch(`${this.urlPeticion}ApoyoEmocional/GetEstadisticasProfesionProfesionales/${tipoPersona}`)
+    getProfesion(tipoPersona: string, fechaInicio: string, fechaFin: string): Promise<AE_EstadisticasComunesEntity[]>{
+      return fetch(`${this.urlPeticion}ApoyoEmocional/GetEstadisticasProfesionProfesionales/${tipoPersona}/${fechaInicio}/${fechaFin}`)
       .then(res => res.json())
       .then(
           (result) => {
@@ -157,8 +157,8 @@ export class AE_Services {
     }
 
     //Especificas
-    getHospitalizaciones(tipoPersona: string): Promise<AE_EstadisticasComunesEntity[]>{
-      return fetch(`${this.urlPeticion}ApoyoEmocional/GetHospitalizacionPacientes/${tipoPersona}`)
+    getHospitalizaciones(tipoPersona: string, fechaInicio: string, fechaFin: string): Promise<AE_EstadisticasComunesEntity[]>{
+      return fetch(`${this.urlPeticion}ApoyoEmocional/GetHospitalizacionPacientes/${tipoPersona}/${fechaInicio}/${fechaFin}`)
       .then(res => res.json())
       .then(
           (result) => {
@@ -171,8 +171,8 @@ export class AE_Services {
       );
     }
 
-    getRelacionCOVID(tipoPersona: string): Promise<AE_EstadisticasComunesEntity[]>{
-      return fetch(`${this.urlPeticion}ApoyoEmocional/GetRelacionCOVIDPacientes/${tipoPersona}`)
+    getRelacionCOVID(tipoPersona: string, fechaInicio: string, fechaFin: string): Promise<AE_EstadisticasComunesEntity[]>{
+      return fetch(`${this.urlPeticion}ApoyoEmocional/GetRelacionCOVIDPacientes/${tipoPersona}/${fechaInicio}/${fechaFin}`)
       .then(res => res.json())
       .then(
           (result) => {
@@ -185,8 +185,8 @@ export class AE_Services {
       );
     }
 
-    getAtendidoEn(tipoPersona: string): Promise<AE_EstadisticasComunesEntity[]>{
-      return fetch(`${this.urlPeticion}ApoyoEmocional/GetAtendidoEnPacientes/${tipoPersona}`)
+    getAtendidoEn(tipoPersona: string, fechaInicio: string, fechaFin: string): Promise<AE_EstadisticasComunesEntity[]>{
+      return fetch(`${this.urlPeticion}ApoyoEmocional/GetAtendidoEnPacientes/${tipoPersona}/${fechaInicio}/${fechaFin}`)
       .then(res => res.json())
       .then(
           (result) => {

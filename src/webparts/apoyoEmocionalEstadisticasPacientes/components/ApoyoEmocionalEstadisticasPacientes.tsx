@@ -8,9 +8,11 @@ import { useEffect, useState } from 'react';
 import Styles from '../common/estilos';
 
 import * as columns from '../common/columns';
-import { DayOfWeek, IDatePickerStyles, PrimaryButton } from 'office-ui-fabric-react';
-// import { DatePicker, DayOfWeek, IDatePickerStyles, PrimaryButton } from 'office-ui-fabric-react';
+// import { DayOfWeek, IDatePickerStyles, PrimaryButton } from 'office-ui-fabric-react';
+import { Calendar, Callout, DatePicker, DayOfWeek, DefaultButton, DirectionalHint, FocusTrapZone, IDatePickerStyles, PrimaryButton } from 'office-ui-fabric-react';
 import { DayPickerStrings } from '../utils/dayPickerStrings';
+import DateRangePicker from '@wojtekmaj/react-daterange-picker';
+import { contentStyles } from '../common/styles';
 
 interface IData {
   dato: string;
@@ -29,8 +31,6 @@ interface IData {
   pers7: number;
   inter7: number;
 }
-
-const datePickerStyles: Partial<IDatePickerStyles> = { root: { width: 200 } };
 
 const ApoyoEmocionalEstadisticasPacientes: React.FunctionComponent<IApoyoEmocionalEstadisticasPacientesProps> = () => {
   const service = new AE_Services();
@@ -108,8 +108,7 @@ const ApoyoEmocionalEstadisticasPacientes: React.FunctionComponent<IApoyoEmocion
   const [columnAtendidoEn, setcolumnAtendidoEn] = useState([])
   const [columnProfesion, setcolumnProfesion] = useState([])
 
-  const [fechaInicio, setFechaInicio] = useState<Date>();
-  const [fechaFin, setFechaFin] = useState<Date>();
+
 
 
   useEffect(() => {
@@ -142,7 +141,7 @@ const ApoyoEmocionalEstadisticasPacientes: React.FunctionComponent<IApoyoEmocion
 
 
   const getItervencionesData = async () => {
-    await service.getIntervenciones('false', fechaInicio, fechaFin).then((elements: AE_EstadisticasComunesEntity[]) => {
+    await service.getIntervenciones('false', value[0].toISOString().slice(0, 19).replace('T', ' '), value[1].toISOString().slice(0, 19).replace('T', ' ')).then((elements: AE_EstadisticasComunesEntity[]) => {
       // console.log(elements);
       let dataShow = [{ dato: 'Intervenciones', pers1: 0, inter1: 0, pers2: 0, inter2: 0, pers3: 0, inter3: 0, pers4: 0, inter4: 0, pers5: 0, inter5: 0, pers6: 0, inter6: 0, pers7: 0, inter7: 0 }];
       let totalPersonas = 0;
@@ -194,7 +193,7 @@ const ApoyoEmocionalEstadisticasPacientes: React.FunctionComponent<IApoyoEmocion
   }
 
   const getSesionesData = async () => {
-    await service.getSesiones('false').then((elements: AE_EstadisticasComunesEntity[]) => {
+    await service.getSesiones('false', value[0].toISOString().slice(0, 19).replace('T', ' '), value[1].toISOString().slice(0, 19).replace('T', ' ')).then((elements: AE_EstadisticasComunesEntity[]) => {
       // console.log(elements);
       let dataShow = [{ dato: 'Sesiones', pers1: 0, inter1: 0, pers2: 0, inter2: 0, pers3: 0, inter3: 0, pers4: 0, inter4: 0, pers5: 0, inter5: 0, pers6: 0, inter6: 0, pers7: 0, inter7: 0 }];
       let totalPersonas = 0;
@@ -246,7 +245,7 @@ const ApoyoEmocionalEstadisticasPacientes: React.FunctionComponent<IApoyoEmocion
   }
 
   const getSexoData = async () => {
-    await service.getSexo('false').then((elements: AE_EstadisticasComunesEntity[]) => {
+    await service.getSexo('false', value[0].toISOString().slice(0, 19).replace('T', ' '), value[1].toISOString().slice(0, 19).replace('T', ' ')).then((elements: AE_EstadisticasComunesEntity[]) => {
       console.log(elements);
       let dataShow: IData[] = [];
       let totalPersonas = 0;
@@ -394,7 +393,7 @@ const ApoyoEmocionalEstadisticasPacientes: React.FunctionComponent<IApoyoEmocion
   }
 
   const getEdadData = async () => {
-    await service.getEdad('false').then((elements: AE_EstadisticasComunesEntity[]) => {
+    await service.getEdad('false', value[0].toISOString().slice(0, 19).replace('T', ' '), value[1].toISOString().slice(0, 19).replace('T', ' ')).then((elements: AE_EstadisticasComunesEntity[]) => {
       console.log(elements);
       let dataShow: IData[] = [];
       let totalPersonas = 0;
@@ -542,7 +541,7 @@ const ApoyoEmocionalEstadisticasPacientes: React.FunctionComponent<IApoyoEmocion
   }
 
   const getOsiData = async () => {
-    await service.getOsi('false').then((elements: AE_EstadisticasComunesEntity[]) => {
+    await service.getOsi('false', value[0].toISOString().slice(0, 19).replace('T', ' '), value[1].toISOString().slice(0, 19).replace('T', ' ')).then((elements: AE_EstadisticasComunesEntity[]) => {
       console.log(elements);
       let dataShow: IData[] = [];
       let totalPersonas = 0;
@@ -690,7 +689,7 @@ const ApoyoEmocionalEstadisticasPacientes: React.FunctionComponent<IApoyoEmocion
   }
 
   const getDemandaData = async () => {
-    await service.getDemanda('false').then((elements: AE_EstadisticasComunesEntity[]) => {
+    await service.getDemanda('false', value[0].toISOString().slice(0, 19).replace('T', ' '), value[1].toISOString().slice(0, 19).replace('T', ' ')).then((elements: AE_EstadisticasComunesEntity[]) => {
       console.log(elements);
       let dataShow: IData[] = [];
       let totalPersonas = 0;
@@ -838,7 +837,7 @@ const ApoyoEmocionalEstadisticasPacientes: React.FunctionComponent<IApoyoEmocion
   }
 
   const getTipoIntervencionData = async () => {
-    await service.getTipoIntervencion('false').then((elements: AE_EstadisticasComunesEntity[]) => {
+    await service.getTipoIntervencion('false', value[0].toISOString().slice(0, 19).replace('T', ' '), value[1].toISOString().slice(0, 19).replace('T', ' ')).then((elements: AE_EstadisticasComunesEntity[]) => {
       console.log(elements);
       let dataShow: IData[] = [];
       let totalPersonas = 0;
@@ -986,7 +985,7 @@ const ApoyoEmocionalEstadisticasPacientes: React.FunctionComponent<IApoyoEmocion
   }
 
   const getIntervencionData = async () => {
-    await service.getClaseIntervencion('false').then((elements: AE_EstadisticasComunesEntity[]) => {
+    await service.getClaseIntervencion('false', value[0].toISOString().slice(0, 19).replace('T', ' '), value[1].toISOString().slice(0, 19).replace('T', ' ')).then((elements: AE_EstadisticasComunesEntity[]) => {
       console.log(elements);
       let dataShow: IData[] = [];
       let totalPersonas = 0;
@@ -1134,7 +1133,7 @@ const ApoyoEmocionalEstadisticasPacientes: React.FunctionComponent<IApoyoEmocion
   }
 
   const getProfesionData = async () => {
-    await service.getProfesion('false').then((elements: AE_EstadisticasComunesEntity[]) => {
+    await service.getProfesion('false', value[0].toISOString().slice(0, 19).replace('T', ' '), value[1].toISOString().slice(0, 19).replace('T', ' ')).then((elements: AE_EstadisticasComunesEntity[]) => {
       console.log(elements);
       let dataShow: IData[] = [];
       let totalPersonas = 0;
@@ -1282,7 +1281,7 @@ const ApoyoEmocionalEstadisticasPacientes: React.FunctionComponent<IApoyoEmocion
   }
 
   const getHospitalizacionData = async () => {
-    await service.getAtendidoEn('false').then((elements: AE_EstadisticasComunesEntity[]) => {
+    await service.getAtendidoEn('false', value[0].toISOString().slice(0, 19).replace('T', ' '), value[1].toISOString().slice(0, 19).replace('T', ' ')).then((elements: AE_EstadisticasComunesEntity[]) => {
       console.log(elements);
       let dataShow: IData[] = [];
       let totalPersonas = 0;
@@ -1490,7 +1489,7 @@ const ApoyoEmocionalEstadisticasPacientes: React.FunctionComponent<IApoyoEmocion
   }
 
   const getrelacionCOVIDData = async () => {
-    await service.getRelacionCOVID('false').then((elements: AE_EstadisticasComunesEntity[]) => {
+    await service.getRelacionCOVID('false', value[0].toISOString().slice(0, 19).replace('T', ' '), value[1].toISOString().slice(0, 19).replace('T', ' ')).then((elements: AE_EstadisticasComunesEntity[]) => {
       console.log(elements);
       let dataShow: IData[] = [];
       let totalPersonas = 0;
@@ -1638,7 +1637,7 @@ const ApoyoEmocionalEstadisticasPacientes: React.FunctionComponent<IApoyoEmocion
   }
 
   const getAtendidoEnData = async () => {
-    await service.getAtendidoEn('false').then((elements: AE_EstadisticasComunesEntity[]) => {
+    await service.getAtendidoEn('false', value[0].toISOString().slice(0, 19).replace('T', ' '), value[1].toISOString().slice(0, 19).replace('T', ' ')).then((elements: AE_EstadisticasComunesEntity[]) => {
       console.log(elements);
       let dataShow: IData[] = [];
       let totalPersonas = 0;
@@ -1785,45 +1784,36 @@ const ApoyoEmocionalEstadisticasPacientes: React.FunctionComponent<IApoyoEmocion
     })
   }
 
-  const handleFechaInicio = (e: React.SetStateAction<Date>) => {
-    // const date = e.toISOString().slice(0, 19).replace('T', ' ')
-    setFechaInicio(e)
-  }
-
-  const handleFechaFin = (e: React.SetStateAction<Date>) => {
-    // const date = e.toISOString().slice(0, 19).replace('T', ' ')
-    setFechaFin(e)
-  }
+  const [fechaFin, setFechaFin] = useState<Date>(new Date());
+  const [fechaInicio, setFechaInicio] = useState<Date>(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000));
 
   const searchByDate = () => {
     getItervencionesData();
+    getSesionesData();
+    getSexoData();
+    getEdadData();
+    getOsiData();
+    getDemandaData();
+    getTipoIntervencionData();
+    getIntervencionData();
+    getProfesionData();
+    getHospitalizacionData();
+    getrelacionCOVIDData();
+    getAtendidoEnData();
   }
+
+  const [value, onChange] = useState<Date[]>([fechaInicio, fechaFin]);
+
+  useEffect(() => {
+    console.log(value)
+  }, [value])
+
 
   return (
     <div>
       <h1>Estadisticas</h1>
-      <div>
-        {/* <DatePicker
-          firstDayOfWeek={DayOfWeek.Monday}
-          strings={DayPickerStrings}
-          placeholder="Fecha de inicio..."
-          ariaLabel="Selecciona una fecha"
-          styles={datePickerStyles}
-          onSelectDate={handleFechaInicio}
-        />
-        <DatePicker
-          firstDayOfWeek={DayOfWeek.Monday}
-          strings={DayPickerStrings}
-          placeholder="Fecha de fin..."
-          ariaLabel="Selecciona una fecha"
-          styles={datePickerStyles}
-          onSelectDate={handleFechaFin}
-        /> */}
-        {/* <DatePicker
-          multiple
-          value={values}
-          onChange={setValues}
-        /> */}
+      <div className={contentStyles.container}>
+        <DateRangePicker onChange={onChange} value={value} format={"yyyy-MM-dd"} />
         <PrimaryButton text="Buscar" onClick={searchByDate} />
       </div>
 
