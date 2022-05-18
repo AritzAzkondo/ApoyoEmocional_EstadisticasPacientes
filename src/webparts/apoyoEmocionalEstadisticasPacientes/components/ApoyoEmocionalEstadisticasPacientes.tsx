@@ -8,6 +8,9 @@ import { useEffect, useState } from 'react';
 import Styles from '../common/estilos';
 
 import * as columns from '../common/columns';
+import { DayOfWeek, IDatePickerStyles, PrimaryButton } from 'office-ui-fabric-react';
+// import { DatePicker, DayOfWeek, IDatePickerStyles, PrimaryButton } from 'office-ui-fabric-react';
+import { DayPickerStrings } from '../utils/dayPickerStrings';
 
 interface IData {
   dato: string;
@@ -26,6 +29,8 @@ interface IData {
   pers7: number;
   inter7: number;
 }
+
+const datePickerStyles: Partial<IDatePickerStyles> = { root: { width: 200 } };
 
 const ApoyoEmocionalEstadisticasPacientes: React.FunctionComponent<IApoyoEmocionalEstadisticasPacientesProps> = () => {
   const service = new AE_Services();
@@ -103,6 +108,10 @@ const ApoyoEmocionalEstadisticasPacientes: React.FunctionComponent<IApoyoEmocion
   const [columnAtendidoEn, setcolumnAtendidoEn] = useState([])
   const [columnProfesion, setcolumnProfesion] = useState([])
 
+  const [fechaInicio, setFechaInicio] = useState<Date>();
+  const [fechaFin, setFechaFin] = useState<Date>();
+
+
   useEffect(() => {
     setcolumnIntervenciones(columns.columnIntervenciones);
     setcolumnSesiones(columns.columnSesiones);
@@ -131,8 +140,9 @@ const ApoyoEmocionalEstadisticasPacientes: React.FunctionComponent<IApoyoEmocion
     getAtendidoEnData();
   }, [])
 
+
   const getItervencionesData = async () => {
-    await service.getIntervenciones('false').then((elements: AE_EstadisticasComunesEntity[]) => {
+    await service.getIntervenciones('false', fechaInicio, fechaFin).then((elements: AE_EstadisticasComunesEntity[]) => {
       // console.log(elements);
       let dataShow = [{ dato: 'Intervenciones', pers1: 0, inter1: 0, pers2: 0, inter2: 0, pers3: 0, inter3: 0, pers4: 0, inter4: 0, pers5: 0, inter5: 0, pers6: 0, inter6: 0, pers7: 0, inter7: 0 }];
       let totalPersonas = 0;
@@ -976,7 +986,7 @@ const ApoyoEmocionalEstadisticasPacientes: React.FunctionComponent<IApoyoEmocion
   }
 
   const getIntervencionData = async () => {
-    await service.getIntervenciones('false').then((elements: AE_EstadisticasComunesEntity[]) => {
+    await service.getClaseIntervencion('false').then((elements: AE_EstadisticasComunesEntity[]) => {
       console.log(elements);
       let dataShow: IData[] = [];
       let totalPersonas = 0;
@@ -1277,9 +1287,9 @@ const ApoyoEmocionalEstadisticasPacientes: React.FunctionComponent<IApoyoEmocion
       let dataShow: IData[] = [];
       let totalPersonas = 0;
       let totalIntervenciones = 0;
-      let dato = 'No ingresado';
+      let dato = ' ';
       let dataObj: IData = {
-        dato: ' ',
+        dato: 'No ingresado',
         pers1: 0,
         inter1: 0,
         pers2: 0,
@@ -1354,7 +1364,7 @@ const ApoyoEmocionalEstadisticasPacientes: React.FunctionComponent<IApoyoEmocion
           dato = elements[i].dato;
         }
 
-        if (dato == 'HOSPITALIZACIÓN') {
+        if (dato == 'HOSPITALIZACIÓN' || dato == 'HOSPITALIZACION') {
           if (elements[i].osi == 13) {
             dataObjHosp.pers1 = dataObjHosp.pers1 += elements[i].totalPersona || 0;
             dataObjHosp.inter1 = dataObjHosp.inter1 += elements[i].totalIntervenciones || 0;
@@ -1400,7 +1410,7 @@ const ApoyoEmocionalEstadisticasPacientes: React.FunctionComponent<IApoyoEmocion
 
           dataObjHosp.pers7 = dataObjHosp.pers7 += totalPersonasHosp;
           dataObjHosp.inter7 = dataObjHosp.inter7 += totalIntervencionesHosp;
-          totalPersTotales += dataObjHosp.pers7; totalInterTotales += dataObjHosp.inter7;
+          totalPersTotalesHosp += dataObjHosp.pers7; totalInterTotalesHosp += dataObjHosp.inter7;
         } else {
           if (elements[i].osi == 13) {
             dataObj.pers1 = dataObj.pers1 += elements[i].totalPersona || 0;
@@ -1470,8 +1480,8 @@ const ApoyoEmocionalEstadisticasPacientes: React.FunctionComponent<IApoyoEmocion
         inter5: totalInterOsi5 + totalInterOsi5Hosp || 0,
         pers6: totalPersOsi6 + totalPersOsi6Hosp || 0,
         inter6: totalInterOsi6 + totalInterOsi6Hosp || 0,
-        pers7: totalPersTotales || 0,
-        inter7: totalInterTotales || 0
+        pers7: totalPersTotales + totalPersTotalesHosp || 0,
+        inter7: totalInterTotales + totalInterTotalesHosp || 0
       };
       dataShow.push(dataCalc);
 
@@ -1775,115 +1785,47 @@ const ApoyoEmocionalEstadisticasPacientes: React.FunctionComponent<IApoyoEmocion
     })
   }
 
-  // const columns = React.useMemo(
-  //   () => [
-  //     {
-  //       Header: ' ',
-  //       columns: [
-  //         {
-  //           Header: ' ',
-  //           accessor: 'dato',
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       Header: 'OSI EZKERRALDEA-ENKARTERRI-CRUCES',
-  //       columns: [
-  //         {
-  //           Header: 'Pers',
-  //           accessor: 'pers1',
-  //         },
-  //         {
-  //           Header: 'Inter',
-  //           accessor: 'inter1',
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       Header: 'RED DE SALUD MENTAL DE GIPUZKOA',
-  //       columns: [
-  //         {
-  //           Header: 'Pers',
-  //           accessor: 'pers2',
-  //         },
-  //         {
-  //           Header: 'Inter',
-  //           accessor: 'inter2',
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       Header: 'RED DE SALUD MENTAL DE BIZKAIA',
-  //       columns: [
-  //         {
-  //           Header: 'Pers',
-  //           accessor: 'pers3',
-  //         },
-  //         {
-  //           Header: 'Inter',
-  //           accessor: 'inter3',
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       Header: 'OSI BARRUALDE-GALDAKAO',
-  //       columns: [
-  //         {
-  //           Header: 'Pers',
-  //           accessor: 'pers4',
-  //         },
-  //         {
-  //           Header: 'Inter',
-  //           accessor: 'inter4',
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       Header: 'OSI BILBAO-BASURTO',
-  //       columns: [
-  //         {
-  //           Header: 'Pers',
-  //           accessor: 'pers5',
-  //         },
-  //         {
-  //           Header: 'Inter',
-  //           accessor: 'inter5',
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       Header: 'RED DE SALUD MENTAL DE ARABA',
-  //       columns: [
-  //         {
-  //           Header: 'Pers',
-  //           accessor: 'pers6',
-  //         },
-  //         {
-  //           Header: 'Inter',
-  //           accessor: 'inter6',
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       Header: 'TOTALES',
-  //       columns: [
-  //         {
-  //           Header: 'Pers',
-  //           accessor: 'pers7',
-  //         },
-  //         {
-  //           Header: 'Inter',
-  //           accessor: 'inter7',
-  //         },
-  //       ],
-  //     },
-  //   ],
-  //   []
-  // )
+  const handleFechaInicio = (e: React.SetStateAction<Date>) => {
+    // const date = e.toISOString().slice(0, 19).replace('T', ' ')
+    setFechaInicio(e)
+  }
+
+  const handleFechaFin = (e: React.SetStateAction<Date>) => {
+    // const date = e.toISOString().slice(0, 19).replace('T', ' ')
+    setFechaFin(e)
+  }
+
+  const searchByDate = () => {
+    getItervencionesData();
+  }
 
   return (
     <div>
       <h1>Estadisticas</h1>
+      <div>
+        {/* <DatePicker
+          firstDayOfWeek={DayOfWeek.Monday}
+          strings={DayPickerStrings}
+          placeholder="Fecha de inicio..."
+          ariaLabel="Selecciona una fecha"
+          styles={datePickerStyles}
+          onSelectDate={handleFechaInicio}
+        />
+        <DatePicker
+          firstDayOfWeek={DayOfWeek.Monday}
+          strings={DayPickerStrings}
+          placeholder="Fecha de fin..."
+          ariaLabel="Selecciona una fecha"
+          styles={datePickerStyles}
+          onSelectDate={handleFechaFin}
+        /> */}
+        {/* <DatePicker
+          multiple
+          value={values}
+          onChange={setValues}
+        /> */}
+        <PrimaryButton text="Buscar" onClick={searchByDate} />
+      </div>
 
       <Styles>
         <Table columns={columnIntervenciones} data={dataIntervenciones} />

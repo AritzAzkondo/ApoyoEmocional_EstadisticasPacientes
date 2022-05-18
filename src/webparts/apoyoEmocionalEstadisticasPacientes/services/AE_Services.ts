@@ -1,4 +1,4 @@
-import { DEV_URL, PRE_URL } from "../common/consts";
+import { DEV_URL, LOCAL, PRE_URL } from "../common/consts";
 import { AE_EstadisticasComunesEntity } from "../entities/AE_EstadisticasComunesEntity";
 
 export class AE_Services {
@@ -12,7 +12,7 @@ export class AE_Services {
             this.urlPeticion = PRE_URL;
         } 
         else {
-            this.urlPeticion = DEV_URL;
+            this.urlPeticion = LOCAL;
         }
     }
 
@@ -30,8 +30,8 @@ export class AE_Services {
       );
     }
 
-    getIntervenciones(tipoPersona: string): Promise<AE_EstadisticasComunesEntity[]>{
-      return fetch(`${this.urlPeticion}ApoyoEmocional/GetEstadisticasIntervencionesProfesionales/${tipoPersona}`)
+    getIntervenciones(tipoPersona: string, fechaInicio: Date, fechaFin: Date): Promise<AE_EstadisticasComunesEntity[]>{
+      return fetch(`${this.urlPeticion}ApoyoEmocional/GetEstadisticasIntervencionesProfesionales/${tipoPersona}/${fechaInicio}/${fechaFin}`)
       .then(res => res.json())
       .then(
           (result) => {
