@@ -21,7 +21,7 @@
     "description": { "default": "ApoyoEmocional_Estadisticas_Pacientes description" },
     "officeFabricIconFontName": "Page",
     "properties": {
-      "description": "ApoyoEmocional_Estadisticas_Pacientes"
+      "description": "LKS.ApoyoEmocional.EstadisticasPacientes"
     }
   }]
 }
